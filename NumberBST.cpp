@@ -92,7 +92,7 @@ public:
         return;
     }
 
-    Node *search(int val)
+    Node *seaRCh(int val)
     {
         Node *cur = root;
         while (cur != NULL)
@@ -174,9 +174,10 @@ public:
     { // recursive
         if (t == NULL)
             return;
-        dipslay(t->LC);
         cout << t->data << " ";
+        dipslay(t->LC);
         dipslay(t->RC);
+        
     }
 
     void print(Node *t)
@@ -203,6 +204,47 @@ public:
         } while (finish != 1);
     }
 
+	void postorder(Node* t){
+		STK s1;
+		STK s2;
+		
+		s1.append(t);
+		
+		while(!s1.isempty()){
+			s2.append(t=s1.pop());
+			if(t->LC) s1.append(t->LC);
+			if(t->RC) s1.append(t->RC);
+		}
+		while(!s2.isempty()){
+			cout<<s2.pop()->data<<" ";
+		}
+	
+	}
+	void preorder(Node* t){
+		STK s1;
+		s1.append(t);
+		while(!s1.isempty()){
+			t=s1.pop();
+			cout<<t->data<<" ";
+			if(t->RC)s1.append(t->RC);
+			if(t->LC) s1.append(t->LC);
+			
+		}
+	}
+	
+	void inorder(Node* t){
+		STK s1;
+		while(t!=NULL || !s1.isempty()){
+			while(t!=NULL){
+				s1.append(t);
+				t=t->LC;
+			}
+			t=s1.pop();
+			cout<<t->data<<" ";
+			t=t->RC;
+		}
+	}
+
     Node *getroot()
     {
         return root;
@@ -226,8 +268,14 @@ int main()
     cout << endl;
     obj.print(obj.getroot());
     cout << endl;
-    obj.delNode(100);
+    obj.delNode(75);
     obj.dipslay(obj.getroot());
+    cout << endl;
+	obj.postorder(obj.getroot());
+    cout << endl;
+    obj.preorder(obj.getroot());
+    cout << endl;
+    obj.inorder(obj.getroot());
     cout << endl;
     return 0;
 }
