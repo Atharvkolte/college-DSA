@@ -10,7 +10,7 @@ typedef struct Employee{
 	string designation;
 	float salary;
 }EMP;
-
+ 	
 class SequentialFile{
 	private:
 		EMP eObj;
@@ -20,7 +20,7 @@ class SequentialFile{
 		void insertRecord();
 		void UpdateRecord(string);
 		void SearchRecord(string);
-		void deleteRecord();
+		void deleteRecord(string);
 		void DisplayRecord();
 		
 };
@@ -94,6 +94,21 @@ void SequentialFile::UpdateRecord(string name){
 	finout.close();	
 }
 
+void SequentialFile::deleteRecord(string name){
+	fstream in;
+	fstream out;
+	out.open("temp.txt",ios::out|ios::binary);
+	in.open("employee3.txt",ios::in|ios::binary);
+	while(in.read((char*)&eObj,sizeof(eObj))){
+		if(eObj.name!=name){
+			out.write((char*)&eObj,sizeof(eObj));
+		}
+	}
+	in.close();
+	out.close();
+	remove("employee3.txt");
+	rename("temp.txt","employee3.txt");
+}
 
 int main(){
 	SequentialFile obj;
@@ -104,10 +119,14 @@ int main(){
 	obj.insertRecord();
 	obj.DisplayRecord();
 	string name;
-	cout<<"which record u need to update enter the name:"<<endl;
+	/*cout<<"which record u need to update enter the name:"<<endl;
 	cin>>name;
 	obj.UpdateRecord(name);
+	obj.DisplayRecord();*/
+	cout<<"which record u need to update enter the name:"<<endl;
+	cin>>name;
+	obj.deleteRecord(name);
+	
 	obj.DisplayRecord();
-
 	return 0;
 }
